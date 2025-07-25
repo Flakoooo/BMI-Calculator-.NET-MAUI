@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BodyMassIndexCalculator.src.Views.CalculatorPage"
+             xmlns:converter="clr-namespace:BodyMassIndexCalculator.src.Converters"
+             xmlns:vm="clr-namespace:BodyMassIndexCalculator.src.ViewModels" 
+             x:DataType="vm:CalculatorViewModel"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ContentPage.Resources>
+        <converter:BoolInverseConverter x:Key="BoolInverseConverter"/>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="25">
+            <Label Text="Индекс массы тела" Style="{StaticResource PageLabel}"/>
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Padding="15" Spacing="20">
+                    <Label Text="Персональные данные" Style="{StaticResource PrimaryLabel16}"/>
+                    <VerticalStackLayout>
+                        <Label Text="Рост (см)" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="175" 
+                               Keyboard="Numeric"
+                               Text="{Binding CalculatorModel.Height}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <Label Text="Вес (кг)" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="70" 
+                               Keyboard="Numeric"
+                               Text="{Binding CalculatorModel.Weight}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            <Button Text="РАССЧИТАТЬ" 
+                    Command="{Binding CalculateCommand}"
+                    Style="{StaticResource PrimaryButton}"/>
+            <Label Text="{Binding CalculatorModel.ErrorText}"
+                   IsVisible="{Binding CalculatorModel.IsResultVisible, Converter={StaticResource BoolInverseConverter}}" 
+                   Style="{StaticResource ErrorLabel}"/>
+            <Border IsVisible="{Binding CalculatorModel.IsResultVisible}" 
+                    Style="{StaticResource ResultCard}">
+                <StackLayout Spacing="8" Padding="15">
+                    <Label Text="Ваш индекс массы тела:" 
+                           Style="{StaticResource PrimaryLabel16}"/>
+                    <Label Text="{Binding CalculatorModel.Result}" 
+                           Style="{StaticResource ResultValue}"/>
+                    <Label Text="{Binding CalculatorModel.Recommendation}" 
+                           Style="{StaticResource ResultDescription}"/>
+                </StackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

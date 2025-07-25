@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BodyMassIndexCalculator.src.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace BodyMassIndexCalculator
 {
@@ -7,16 +8,13 @@ namespace BodyMassIndexCalculator
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+            builder.UseMauiApp<App>();
+
+            builder.Services
+                .AddTransient<CalculatorViewModel>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
