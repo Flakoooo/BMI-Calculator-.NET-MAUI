@@ -4,6 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Style x:Key="CenteredTabStyle" TargetType="Tab">
+        <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource PrimaryTextColor}"/>
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource SecondaryTextColor}"/>
+        <Setter Property="Shell.TabBarForegroundColor" Value="{DynamicResource InterfaceColor}"/>
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource InterfaceColor}"/>
+    </Style>
+
     <!-- Базовые стили -->
 
     <Style x:Key="Label14Base" TargetType="Label">
@@ -31,6 +38,9 @@
     <Style x:Key="SecondaryLabel14" TargetType="Label" BasedOn="{StaticResource Label14Base}">
         <Setter Property="TextColor" Value="{StaticResource SecondaryTextColor}"/>
     </Style>
+    <Style x:Key="SecondaryLabel14Center" TargetType="Label" BasedOn="{StaticResource SecondaryLabel14}">
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
 
     <Style x:Key="ErrorLabel" TargetType="Label" BasedOn="{StaticResource Label14Base}">
         <Setter Property="HorizontalOptions" Value="Center"/>
@@ -40,6 +50,18 @@
 
     <Style x:Key="PrimaryLabel16" TargetType="Label" BasedOn="{StaticResource PrimaryLabel16Base}">
         <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="BMICValue" TargetType="Label" BasedOn="{StaticResource Label16Base}">
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
+    </Style>
+
+    <Style x:Key="ProfileFullName" TargetType="Label">
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="TextColor" Value="{StaticResource SecondaryTextColor}"/>
     </Style>
 
     <Style x:Key="PageLabel" TargetType="Label">
@@ -84,6 +106,15 @@
     <Style x:Key="ResultCard" TargetType="Border" BasedOn="{StaticResource Card}">
         <Setter Property="HorizontalOptions" Value="Fill"/>
         <Setter Property="BackgroundColor" Value="#E8F5E9"/>
+    </Style>
+
+    <Style x:Key="Avatar" TargetType="Border">
+        <Setter Property="Stroke" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 50"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="WidthRequest" Value="100"/>
+        <Setter Property="HeightRequest" Value="100"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
 
     <!-- Entry стили -->

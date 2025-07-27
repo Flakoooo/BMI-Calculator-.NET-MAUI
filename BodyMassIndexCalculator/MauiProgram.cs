@@ -11,7 +11,8 @@ namespace BodyMassIndexCalculator
             builder.UseMauiApp<App>();
 
             builder.Services
-                .AddTransient<CalculatorViewModel>();
+                .AddTransient<CalculatorViewModel>()
+                .AddTransient<ProfileViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();
