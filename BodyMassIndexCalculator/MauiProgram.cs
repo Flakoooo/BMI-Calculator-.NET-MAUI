@@ -1,4 +1,6 @@
-﻿using BodyMassIndexCalculator.src.ViewModels;
+﻿using BodyMassIndexCalculator.src.Services;
+using BodyMassIndexCalculator.src.Services.Interfaces;
+using BodyMassIndexCalculator.src.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace BodyMassIndexCalculator
@@ -11,6 +13,9 @@ namespace BodyMassIndexCalculator
             builder.UseMauiApp<App>();
 
             builder.Services
+                .AddSingleton<INavigationService, NavigationService>()
+                .AddTransient<LoginViewModel>()
+                .AddTransient<RegisterViewModel>()
                 .AddTransient<CalculatorViewModel>()
                 .AddTransient<ProfileViewModel>();
 

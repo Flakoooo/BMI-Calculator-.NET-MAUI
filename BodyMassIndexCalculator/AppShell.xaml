@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BodyMassIndexCalculator.src.Views"
     FlyoutBehavior="Disabled">
+    <ShellContent x:Name="LoginPage" Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+    <ShellContent x:Name="RegisterPage" Route="RegisterPage" ContentTemplate="{DataTemplate local:RegisterPage}" />
     <TabBar x:Name="MainTabs" Route="MainTabs">
         <Tab Title="Калькулятор" Style="{StaticResource CenteredTabStyle}">
             <ShellContent Route="CalculatorPage" ContentTemplate="{DataTemplate local:CalculatorPage}" />

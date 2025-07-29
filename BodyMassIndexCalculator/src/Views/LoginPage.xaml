@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BodyMassIndexCalculator.src.ViewModels"
+             x:Class="BodyMassIndexCalculator.src.Views.LoginPage"
+             x:DataType="vm:LoginViewModel"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="30" VerticalOptions="Center">
+            <Label Text="Вход в приложение" Style="{StaticResource PageLabel}"/>
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="20" Padding="20">
+                    <VerticalStackLayout>
+                        <Label Text="Email" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="user@example.com" 
+                               Keyboard="Email"
+                               Text="{Binding LoginModel.Email}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <Label Text="Пароль" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="Введите пароль" 
+                               IsPassword="True"
+                               Text="{Binding LoginModel.Password}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <Label Text="Зарегистрироваться" 
+                           Style="{StaticResource ClickableLabel}"
+                           HorizontalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRegisterCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+            <Button Text="ВОЙТИ" 
+                    Command="{Binding LoginCommand}"
+                    Style="{StaticResource PrimaryButton}"/>
+            <Label Text="{Binding LoginModel.ErrorText}" Style="{StaticResource ErrorLabel}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

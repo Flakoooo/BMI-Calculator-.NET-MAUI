@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BodyMassIndexCalculator.src.ViewModels"
+             x:Class="BodyMassIndexCalculator.src.Views.RegisterPage"
+             x:DataType="vm:RegisterViewModel"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="30" VerticalOptions="Center">
+            <Label Text="Регистрация" Style="{StaticResource PageLabel}"/>
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="20" Padding="20">
+                    <VerticalStackLayout>
+                        <Label Text="Имя" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="Введите имя" 
+                               Keyboard="Default"
+                               Text="{Binding RegisterModel.FirstName}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <Label Text="Фамилия" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="Введите фамилию" 
+                               Keyboard="Default"
+                               Text="{Binding RegisterModel.LastName}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <Label Text="Email" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="user@example.com" 
+                               Keyboard="Email"
+                               Text="{Binding RegisterModel.Email}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <Label Text="Пароль" Style="{StaticResource SecondaryLabel14}"/>
+                        <Entry Placeholder="Введите пароль" 
+                               IsPassword="True"
+                               Text="{Binding RegisterModel.Password}"
+                               Style="{StaticResource DataInput}"/>
+                    </VerticalStackLayout>
+                    <Label Text="Вернуться к странице входа" 
+                           Style="{StaticResource ClickableLabel}"
+                           HorizontalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToLoginCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+            <Button Text="СОЗДАТЬ АККАУНТ" 
+                    Command="{Binding RegisterCommand}"
+                    Style="{StaticResource PrimaryButton}"/>
+            <Label Text="{Binding RegisterModel.ErrorText}" Style="{StaticResource ErrorLabel}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

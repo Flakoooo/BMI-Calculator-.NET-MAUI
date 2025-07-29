@@ -52,6 +52,10 @@
         <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 
+    <Style x:Key="ClickableLabel" TargetType="Label" BasedOn="{StaticResource PrimaryLabel16Base}">
+        <Setter Property="TextDecorations" Value="None"/>
+    </Style>
+
     <Style x:Key="BMICValue" TargetType="Label" BasedOn="{StaticResource Label16Base}">
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
