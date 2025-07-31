@@ -1,4 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BodyMassIndexCalculator.src.Models;
+using BodyMassIndexCalculator.src.Services;
+using BodyMassIndexCalculator.src.Services.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -31,11 +34,15 @@ namespace BodyMassIndexCalculator.src.ViewModels
 
     public partial class CalculatorViewModel : ObservableObject
     {
+        private readonly IAPI _api;
+
         [ObservableProperty]
         private CalculatorModel _calculatorModel;
 
-        public CalculatorViewModel()
+        public CalculatorViewModel(IAPI api)
         {
+            _api = api;
+
             CalculatorModel = new CalculatorModel
             {
                 ErrorText = string.Empty,
@@ -71,12 +78,40 @@ namespace BodyMassIndexCalculator.src.ViewModels
             if (int.TryParse(CalculatorModel.Height, out int height) &&
                 int.TryParse(CalculatorModel.Weight, out int weight))
             {
+                bool heighLittle = height < 50;
+                bool heighBig = height > 272;
+                bool weightLittle = weight < 50;
+                bool weightBig = weight > 500;
+                if (heighLittle || weightLittle || heighBig || weightBig)
+                {
+                    CalculatorModel.ErrorText = (heighLittle, weightLittle, heighBig, weightBig) switch
+                    {
+                        (true, _, _, _) => "Рост не может быть меньше 50!",
+                        (_, true, _, _) => "Вес не может быть меньше 2!",
+                        (_, _, true, _) => "Рост не может быть больше 272!",
+                        (_, _, _, true) => "Вес не может быть больше 500!",
+                        _ => string.Empty
+                    };
+                    CalculatorModel.IsResultVisible = false;
+                    return;
+                }
+
                 double index = Math.Round(weight / Math.Pow((double)height / 100, 2), 2);
                 string recommendation = GetRecommendation(index);
 
-                (CalculatorModel.Result,
-                    CalculatorModel.Recommendation,
-                    CalculatorModel.IsResultVisible) = (index.ToString(), recommendation, true);
+                var id = SupabaseService.Client.Auth.CurrentUser?.Id;
+                if (id != null)
+                {
+                    var result = await _api.CreateCalculation(Guid.Parse(id), height, weight, index, recommendation);
+                    if (result.Error == null && result.Result != null)
+                    {
+                        CalculatorModel.Result = index.ToString();
+                        CalculatorModel.Recommendation = recommendation;
+                        CalculatorModel.IsResultVisible = true;
+                    }
+                    else CalculatorModel.ErrorText = result.Error ?? "Ошибка при сохранении данных";
+                }
+                else CalculatorModel.ErrorText = "Ошибка авторизации";
             }
             return;
         }

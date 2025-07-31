@@ -1,4 +1,6 @@
 ﻿using BodyMassIndexCalculator.src.Models;
+using BodyMassIndexCalculator.src.Services;
+using BodyMassIndexCalculator.src.Services.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -19,20 +21,31 @@ namespace BodyMassIndexCalculator.src.ViewModels
 
     public partial class ProfileViewModel : ObservableObject
     {
+        private readonly IAPI _api;
         private DateTime _lastRefreshTime = DateTime.MinValue;
 
         [ObservableProperty]
         private ProfileModel _profileModel;
 
-        public ProfileViewModel()
+        public ProfileViewModel(IAPI api)
         {
+            _api = api;
+
             ProfileModel = new ProfileModel
             {
                 Name = string.Empty,
                 Email = string.Empty,
                 BodyMassIndexCalculations = []
             };
-            SetUserData("Имя Фамилия", "Почта");
+            var user = SupabaseService.Client.Auth.CurrentUser;
+            if (user == null) SetUserData();
+            else
+            {
+                var metadata = user.UserMetadata;
+                string? firstName = metadata?["first_name"]?.ToString();
+                string? lastName = metadata?["last_name"]?.ToString();
+                SetUserData($"{firstName} {lastName}", user.Email ?? "null");
+            }
             _ = LoadCalculationsDataAsync();
         }
 
@@ -48,33 +61,8 @@ namespace BodyMassIndexCalculator.src.ViewModels
 
         private async Task LoadCalculationsDataAsync()
         {
-            IEnumerable<BodyMassIndexCalculation> calculations = 
-                [  
-                new BodyMassIndexCalculation 
-                {
-                    CreatedAt = DateTime.Now,
-                    Height = 185,
-                    Weight = 77,
-                    BodyMassIndex = 22.5,
-                    Recommendation = "рекомендация 1"
-                },
-                new BodyMassIndexCalculation
-                {
-                    CreatedAt = DateTime.Now.AddDays(-1),
-                    Height = 180,
-                    Weight = 82,
-                    BodyMassIndex = 24.3,
-                    Recommendation = "рекомендация 2"
-                },
-                new BodyMassIndexCalculation
-                {
-                    CreatedAt = DateTime.Now.AddDays(-2),
-                    Height = 190,
-                    Weight = 56,
-                    BodyMassIndex = 19.2,
-                    Recommendation = "рекомендация 3"
-                }
-                ];
+            var userId = SupabaseService.Client.Auth.CurrentUser?.Id;
+            var calculations = userId != null ? await _api.GetCalculationsByUserId(Guid.Parse(userId)) : [];
             ProfileModel.BodyMassIndexCalculations = new ObservableCollection<BodyMassIndexCalculation>(
                 calculations.OrderByDescending(bmic => bmic.CreatedAt)
             );

@@ -14,6 +14,7 @@ namespace BodyMassIndexCalculator
 
             builder.Services
                 .AddSingleton<INavigationService, NavigationService>()
+                .AddSingleton<IAPI, API>()
                 .AddTransient<LoginViewModel>()
                 .AddTransient<RegisterViewModel>()
                 .AddTransient<CalculatorViewModel>()

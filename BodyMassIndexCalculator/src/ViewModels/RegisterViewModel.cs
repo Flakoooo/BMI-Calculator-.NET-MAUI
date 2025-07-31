@@ -60,10 +60,10 @@ namespace BodyMassIndexCalculator.src.ViewModels
                 {
                     RegisterModel.ErrorText = (firstNameEmpty, lastNameEmpty, emailEmpty, passwordEmpty) switch
                     {
-                        (true, false, false, false) => "Заполните поле имени!",
-                        (false, true, false, false) => "Заполните поле фамилии!",
-                        (false, false, true, false) => "Заполните поле почты!",
-                        (false, false, false, true) => "Заполните поле пароля!",
+                        (true, _, _, _) => "Заполните поле имени!",
+                        (_, true, _, _) => "Заполните поле фамилии!",
+                        (_, _, true, _) => "Заполните поле почты!",
+                        (_, _, _, true) => "Заполните поле пароля!",
                         _ => "Заполните все поля!"
                     };
                     return;
@@ -75,7 +75,7 @@ namespace BodyMassIndexCalculator.src.ViewModels
                     return;
                 }
 
-                AuthResponseResult<string> result = await AuthService.SignUp(
+                var result = await AuthService.SignUp(
                     RegisterModel.FirstName ?? "",
                     RegisterModel.LastName ?? "",
                     RegisterModel.Email ?? throw new ArgumentNullException(),
